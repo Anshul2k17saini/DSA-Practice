@@ -1,0 +1,51 @@
+***************************************************
+shortes path in bineary maze
+***************************************************
+#include<iostream>
+#include<climits>
+#include<algorithm>
+using namespace std;
+bool isValid(int a[][10],int i,int j,bool vis[][10])
+{
+    return i>=0&&j>=0&&i<9&&j<10&&a[i][j]==1&&!vis[i][j];
+}
+int BFS(int a[][10],int i,int j,int x,int y,bool vis[][10])
+{
+    if(!isValid(a,i,j,vis))
+    {
+        return 1000;
+    }
+    if(i==x&&j==y)
+    {
+        return 0;
+    }
+    vis[i][j]=true;
+    int left=BFS(a,i,j-1,x,y,vis)+1;
+    int rigth=BFS(a,i,j+1,x,y,vis)+1;
+    int bottom=BFS(a,i+1,j,x,y,vis)+1;
+    int top=BFS(a,i-1,j,x,y,vis)+1;
+    vis[i][j]=false;
+    
+    return min(min(left,rigth),min(bottom,top)); 
+}
+int main()
+{
+    int a[9][10]={
+        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 }, 
+        { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1 }, 
+        { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 }, 
+        { 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 }, 
+        { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, 
+        { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 }, 
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 
+        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 }, 
+        { 1, 1, 0, 0, 0, 0, 1, 0, 0, 1 } 
+    }; 
+    bool vis[9][10];
+    int dist = BFS(a,0,0,3,4,vis); 
+    if (dist != INT_MAX) 
+        cout << "Shortest Path is " << dist ; 
+    else
+        cout << "Shortest Path doesn't exist"; 
+    return 0;
+}
